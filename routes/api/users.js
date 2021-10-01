@@ -7,7 +7,7 @@ const {
     createUser,
     updateUser,
     deleteUser
-} = require('../../controllers/api/users')
+} = require('../../controllers/api/Users')
 
 
 router
