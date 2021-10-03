@@ -18,7 +18,7 @@ const userController = {
     getUserById({ params }, res) {
         User.findOne({ _id: params.id })
             .populate({
-                path: 'comments',
+                path: 'thoughts',
                 select: '-__v'
             })
             .select('-__v')
@@ -46,8 +46,41 @@ const userController = {
     },
     deleteUser({ params }, res) {
         User.findOneAndDelete({ _id: params.id })
-            .then(dbUserData => res.json(dbUserData))
+        if (!dbUserData) {
+            res.status(404).json({ message: 'No User associated with this ID was found.' });
+            return;
+        }
+        res.json(dbUserData);
+    },
+    createFriend({ body }, res) {
+        User.findOneAndUpdate(
+            { _id: params.id },
+            { $addToSet: { friends: params.friendId } }, 
+            { runValidators: true }
+        )
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    res.status(404).json({ message: 'No User associated with this ID was found.' });
+                    return;
+                }
+                res.json(dbUserData);
+            })
             .catch(err => res.json(err));
+    },
+    deleteFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.id }, 
+            { $pull: { friends: params.friendId } }, 
+            { runValidators: true }
+        )
+        .then(dbUserData => {
+            if (!dbUserData) {
+                res.status(404).json({ message: 'No User associated with this ID was found.' });
+                return;
+            }
+            res.json(dbUserData);
+        })
+        .catch(err => res.json(err));
     }
 };
 

@@ -13,7 +13,7 @@ router
   .route('/')
   .get(getAllThought);
 router
-  .router.('/:userId')
+  .router('/:userId')
   .post(createThought);
 
 
