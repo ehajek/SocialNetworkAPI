@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-//const dataFormat = require('../utils/dataFormat');
 
 const UserSchema = new Schema(
     {
