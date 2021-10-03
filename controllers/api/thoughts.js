@@ -75,4 +75,4 @@ const thoughtController = {
     }
 };
 
-modules.exports = thoughtController;
+module.exports = thoughtController;

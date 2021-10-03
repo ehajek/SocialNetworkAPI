@@ -1,13 +1,13 @@
 const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
-const reactionSchema = require('./reaction');
+const reactionSchema = require('./Reaction');
 
 const thoughtSchema = new Schema(
     {
         thoughtText: {
-            Type: String,
-            required: 'Text for Thought is required!',
-            match: [/^.{1,280}$/, 'Text for Thought must be between 1 and 280 characters.']
+            type: String,
+            match: [/^.{1,280}$/, 'Text for Thought must be between 1 and 280 characters.'],
+            required: true
         },
         createdAt: {
             type: Date,
@@ -18,9 +18,7 @@ const thoughtSchema = new Schema(
             type: String,
             required: 'User Name is Required'
         },
-        reactions: [
-            reactionSchema
-        ]
+        reactions: [reactionSchema]
     },
     {
         toJSON: {

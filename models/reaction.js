@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, Types } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const reactionSchema = new Schema({
@@ -7,13 +7,13 @@ const reactionSchema = new Schema({
         default: () => new Types.ObjectId(),
       },
       reactionBody: {
-        Type: String,
-        required: 'Text for Reaction is required!',
+        type: String,
+        required: true,
         match: [/^.{1,280}$/, 'Text for Reaction must be between 1 and 280 characters.']
       },
       userName: {
         type: String,
-        required: 'User Name is Required'
+        required: 'User Name is required'
     },
     createdAt: {
         type: Date,
@@ -29,7 +29,7 @@ const reactionSchema = new Schema({
         id: false
     });
     
-const Reaction = model('Reaction', reactionSchema);
+const Reaction = reactionSchema;
 module.exports = Reaction;
 
 
