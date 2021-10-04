@@ -1,4 +1,4 @@
-const { User } = require('../../models');
+const { User, Friends } = require('../../models');
 
 const userController = {
     getAllUser(req, res) {
@@ -52,14 +52,18 @@ const userController = {
                     return;
                 }
                 res.json(dbUserData);
+                return Thought.deleteMany({ _id: { $in: dbUserData.thoughts } })
+            })
+            .then(() => {
+                res.json({ message: 'User and associated thoughts have been deleted!' });
             })
             .catch(err => res.json(err));
     },
-    createFriend({ body }, res) {
+    createFriend({ params }, res) {
         User.findOneAndUpdate(
-            { _id: params.id },
-            { $addToSet: { friends: params.friendId } },
-            { runValidators: true }
+            {_id: params.userId},
+            { $push: { friends: params.friendId } },
+            { new: true }
         )
             .then(dbUserData => {
                 if (!dbUserData) {
@@ -72,18 +76,12 @@ const userController = {
     },
     deleteFriend({ params }, res) {
         User.findOneAndUpdate(
-            { _id: params.id },
-            { $pull: { friends: params.friendId } },
-            { runValidators: true }
+            { _id: params.userId },
+            { $pull: { friends: params.friendId }},
+            { new: true}
         )
-            .then(dbUserData => {
-                if (!dbUserData) {
-                    res.status(404).json({ message: 'No User associated with this ID was found.' });
-                    return;
-                }
-                res.json(dbUserData);
-            })
-            .catch(err => res.json(err));
+        .then(dbUserData => res.json(dbUserData))
+        .catch(err => res.json(err));
     }
 };
 
