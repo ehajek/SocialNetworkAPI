@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(require('./routes'));
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialnetworkapi3', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialnetworkapi4', {
   // useFindAndModify: false,
   // useNewUrlParser: true,
   // useUnifiedTopology: true

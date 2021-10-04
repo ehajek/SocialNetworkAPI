@@ -28,7 +28,7 @@ const thoughtController = {
                 res.sendStatus(400);
             });
     },
-    createThought({ body }, res) {
+    createThought({ params, body }, res) {
         Thought.create(body)
             .then(({ _id }) => {
                 return User.findOneAndUpdate(
@@ -70,19 +70,21 @@ const thoughtController = {
                     res.status(404).json({ message: 'No Thought associated with this ID was found.' });
                     return;
                 }
-                return User.findOneAndUpdate(
-                    { _id: params.userId },
-                    { $pull: { thoughts: params.thoughtId } },
-                    { new: true }
-                );
+                res.json(dbThoughtData);
+                // return User.findOneAndUpdate(
+                //     { _id: params.userId },
+                //     { $pull: { thoughts: params.thoughtId } },
+                //     { new: true }
+                // );
             })
-            .then(dbUserData => {
-                if (!dbUserData) {
-                    res.status(404).json({ message: 'No User associated with this ID was found.' });
-                    return;
-                }
-                res.json({ message: 'Thought was succesfully deleted!' });
-            })
+            // .then(dbUserData => {
+            //     if (!dbUserData) {
+            //         res.status(404).json({ message: 'No User associated with this ID was found.' });
+            //         return;
+            //     }
+            //     res.json({ message: 'Thought was succesfully deleted!' });
+            // })
+            .then(dbThoughtData => res.json(dbThoughtData))
             .catch(err => res.json(err));
     },
     createReation({ params, body }, res) {
